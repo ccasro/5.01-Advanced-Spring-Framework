@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/blackjack
+
+  r2dbc:
+    url: r2dbc:mysql://localhost:3307/blackjack
+    username: blackjack
+    password: blackjack
