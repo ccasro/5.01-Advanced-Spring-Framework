@@ -13,6 +13,10 @@ public class Hand {
 
     public static Hand empty() { return new Hand(List.of()); }
 
+    public static Hand fromCards(List<Card> cards) {
+        return new Hand(cards);
+    }
+
     public Hand add(Card card) {
         var next = new ArrayList<>(cards);
         next.add(card);

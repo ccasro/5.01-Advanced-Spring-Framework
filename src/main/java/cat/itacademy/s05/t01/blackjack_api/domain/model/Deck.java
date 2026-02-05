@@ -12,6 +12,10 @@ public final class Deck {
         this.cards = List.copyOf(cards);
     }
 
+    public static Deck fromCards(List<Card> cards){
+        return new Deck(cards);
+    }
+
     public static Deck standardShuffled(){
         List<Card> all = new ArrayList<>();
 
@@ -40,4 +44,8 @@ public final class Deck {
     }
 
     public record DrawResult(Card card, Deck nextDeck) {}
+
+    public List<Card> cards() {
+        return List.copyOf(cards);
+    }
 }
