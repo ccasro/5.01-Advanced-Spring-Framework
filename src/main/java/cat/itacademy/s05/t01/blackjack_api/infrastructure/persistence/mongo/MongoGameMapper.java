@@ -14,8 +14,22 @@ public final class MongoGameMapper {
                 game.playerId().value(),
                 toCardDocs(game.playerHand().cards()),
                 toCardDocs(game.dealerHand().cards()),
+                toCardDocs(game.deck().cards()),
                 game.status().name()
         );
+    }
+
+    public static Game toDomain(MongoGameDocument doc) {
+        GameId gameId = new GameId(doc.getId());
+        PlayerId playerId = new PlayerId(doc.getPlayerId());
+
+        Hand playerHand = Hand.fromCards(fromCardDocs(doc.getPlayerCards()));
+        Hand dealerHand = Hand.fromCards(fromCardDocs(doc.getDealerCards()));
+        Deck deck = Deck.fromCards(fromCardDocs(doc.getDeckCards()));
+
+        GameStatus status = GameStatus.valueOf(doc.getStatus());
+
+        return Game.rehydrate(gameId, playerId, deck, playerHand, dealerHand, status );
     }
 
     private static List<CardDoc> toCardDocs(List<Card> cards) {
@@ -23,4 +37,12 @@ public final class MongoGameMapper {
                 .map(card -> new CardDoc(card.rank().name(), card.suit().name()))
                 .toList();
     }
+
+    private static List<Card> fromCardDocs(List<CardDoc> docs) {
+        return docs.stream()
+                .map(d -> new Card(Rank.valueOf(d.getRank()), Suit.valueOf(d.getSuit())))
+                .toList();
+    }
+
+
 }
