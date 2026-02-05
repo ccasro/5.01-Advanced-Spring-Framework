@@ -3,7 +3,9 @@ package cat.itacademy.s05.t01.blackjack_api.infrastructure.web.controller;
 
 import cat.itacademy.s05.t01.blackjack_api.application.dto.CreateGameCommand;
 import cat.itacademy.s05.t01.blackjack_api.application.dto.CreateGameResult;
+import cat.itacademy.s05.t01.blackjack_api.application.dto.GameStateResult;
 import cat.itacademy.s05.t01.blackjack_api.application.usecase.CreateNewGameUseCase;
+import cat.itacademy.s05.t01.blackjack_api.application.usecase.GetGameStateUseCase;
 import cat.itacademy.s05.t01.blackjack_api.infrastructure.web.dto.CreateGameRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -17,10 +19,16 @@ import reactor.core.publisher.Mono;
 public class GameController {
 
     private final CreateNewGameUseCase createNewGame;
+    private final GetGameStateUseCase getGameState;
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<CreateGameResult> create(@Valid @RequestBody CreateGameRequest request) {
         return createNewGame.execute(new CreateGameCommand(request.playerName()));
+    }
+
+    @GetMapping("/{id}")
+    public Mono<GameStateResult> get(@PathVariable String id) {
+        return getGameState.execute(id);
     }
 }

@@ -33,6 +33,10 @@ public final class Game {
         return g.resolveNaturals();
     }
 
+    public static Game rehydrate(GameId id, PlayerId playerId, Deck deck, Hand playerHand, Hand dealerHand, GameStatus status ){
+        return new Game(id, playerId, deck, playerHand, dealerHand, status);
+    }
+
     public static Game newGame(PlayerId playerId){
         return newGame(playerId, Deck.standardShuffled());
     }
@@ -107,6 +111,7 @@ public final class Game {
 
     public GameId id() { return id; }
     public PlayerId playerId() { return playerId; }
+    public Deck deck() { return deck; }
     public Hand playerHand() { return playerHand; }
     public Hand dealerHand() { return dealerHand; }
     public GameStatus status() { return status; }
