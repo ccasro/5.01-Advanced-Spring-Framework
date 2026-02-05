@@ -1,0 +1,7 @@
+CREATE TABLE players (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  external_id VARCHAR(36) NOT NULL,
+  name VARCHAR(30) NOT NULL UNIQUE,
+  wins INT NOT NULL,
+  losses INT NOT NULL,
+);
