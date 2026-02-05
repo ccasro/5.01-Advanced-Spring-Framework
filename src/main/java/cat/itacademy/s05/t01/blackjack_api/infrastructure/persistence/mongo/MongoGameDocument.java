@@ -22,5 +22,6 @@ public class MongoGameDocument {
     private String playerId;
     private List<CardDoc> playerCards;
     private List<CardDoc> dealerCards;
+    private List<CardDoc> deckCards;
     private String status;
 }
