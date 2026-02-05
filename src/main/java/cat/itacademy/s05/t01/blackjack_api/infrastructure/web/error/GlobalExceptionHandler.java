@@ -2,6 +2,7 @@ package cat.itacademy.s05.t01.blackjack_api.infrastructure.web.error;
 
 
 import cat.itacademy.s05.t01.blackjack_api.domain.exception.GameNotFoundException;
+import cat.itacademy.s05.t01.blackjack_api.domain.exception.InvalidMoveException;
 import cat.itacademy.s05.t01.blackjack_api.domain.exception.InvalidPlayerNameException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.core.annotation.Order;
@@ -9,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.support.WebExchangeBindException;
@@ -39,6 +39,16 @@ public class GlobalExceptionHandler {
         return Mono.just(ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.of(400, "INVALID_PLAYER_NAME", ex.getMessage(), request.getPath().value())));
+    }
+
+    @ExceptionHandler(InvalidMoveException.class)
+    public Mono<ResponseEntity<ErrorResponse>> handleInvalidMove(
+            InvalidMoveException ex,
+            ServerHttpRequest request
+    ) {
+        return Mono.just(ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ErrorResponse.of(409, "INVALID_MOVE", ex.getMessage(), request.getPath().value())));
     }
 
     @ExceptionHandler(WebExchangeBindException.class)
