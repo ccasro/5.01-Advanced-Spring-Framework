@@ -58,7 +58,11 @@ public class GameControllerTest {
                 .uri("/game/new")
                 .bodyValue(new CreateGameCommand("  "))
                 .exchange()
-                .expectStatus().isBadRequest();
+                .expectStatus().isBadRequest()
+                .expectBody()
+                .jsonPath("$.status").isEqualTo(400)
+                .jsonPath("$.code").isEqualTo("VALIDATION_ERROR")
+                .jsonPath("$.path").isEqualTo("/game/new");
     }
 
     @Test
@@ -105,7 +109,11 @@ public class GameControllerTest {
         webTestClient.get()
                 .uri("/game/missing")
                 .exchange()
-                .expectStatus().isNotFound();
+                .expectStatus().isNotFound()
+                .expectBody()
+                .jsonPath("$.status").isEqualTo(404)
+                .jsonPath("$.code").isEqualTo("GAME_NOT_FOUND")
+                .jsonPath("$.path").isEqualTo("/game/missing");
     }
 
 }
