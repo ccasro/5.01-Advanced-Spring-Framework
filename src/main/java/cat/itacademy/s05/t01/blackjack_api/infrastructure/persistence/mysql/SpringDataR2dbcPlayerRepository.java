@@ -5,4 +5,5 @@ import reactor.core.publisher.Mono;
 
 public interface SpringDataR2dbcPlayerRepository extends ReactiveCrudRepository<PlayerRow, Long> {
     Mono<PlayerRow> findByName(String name);
+    Mono<PlayerRow> findByExternalId(String externalId);
 }
