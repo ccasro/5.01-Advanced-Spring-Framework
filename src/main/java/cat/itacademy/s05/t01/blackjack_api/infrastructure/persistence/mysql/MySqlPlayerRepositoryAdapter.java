@@ -19,29 +19,33 @@ public class MySqlPlayerRepositoryAdapter implements PlayerRepositoryPort {
 
     @Override
     public Mono<Player> save(Player player) {
-        PlayerRow row = new PlayerRow(
-                null,
-                player.id().value(),
-                player.name().value(),
-                player.wins(),
-                player.losses()
-        );
-        return repo.save(row).map(this::toDomain);
+        return repo.findByExternalId(player.id().value())
+                .defaultIfEmpty(new PlayerRow(
+                        null,
+                        player.id().value(),
+                        player.name().value(),
+                        player.wins(),
+                        player.losses()
+                ))
+                .flatMap(existing -> {
+                    existing.setName(player.name().value());
+                    existing.setWins(player.wins());
+                    existing.setLosses(player.losses());
+                    return repo.save(existing).map(this::toDomain);
+                });
     }
 
     @Override
     public Mono<Player> findById(PlayerId id) {
-        return Mono.error(new UnsupportedOperationException("Not implemented yet"));
+        return repo.findByExternalId(id.value())
+                .map(this::toDomain);
     }
 
     @Override
     public Mono<Player> findOrCreateByName(PlayerName name) {
         return repo.findByName(name.value())
                 .map(this::toDomain)
-                .switchIfEmpty(Mono.defer(() -> {
-                    Player newPlayer = Player.newPlayer(name);
-                    return save(newPlayer);
-                }));
+                .switchIfEmpty(Mono.defer(() -> save(Player.newPlayer(name))));
     }
 
     @Override

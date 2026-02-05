@@ -1,5 +1,7 @@
 package cat.itacademy.s05.t01.blackjack_api.domain.model;
 
+import cat.itacademy.s05.t01.blackjack_api.domain.exception.InvalidMoveException;
+
 import java.util.Objects;
 
 public final class Game {
@@ -106,7 +108,7 @@ public final class Game {
     }
 
     private void ensureInProgress() {
-        if (status != GameStatus.IN_PROGRESS) throw new IllegalStateException("Game is not in progress");
+        if (status != GameStatus.IN_PROGRESS) throw new InvalidMoveException("Game is not in progress");
     }
 
     public GameId id() { return id; }
