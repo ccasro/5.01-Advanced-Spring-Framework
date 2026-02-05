@@ -1,5 +1,6 @@
 package cat.itacademy.s05.t01.blackjack_api.domain.model;
 
+import cat.itacademy.s05.t01.blackjack_api.domain.exception.InvalidMoveException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -144,6 +145,6 @@ public class GameTest {
         Game g = Game.newGame(PlayerId.newId(), d);
         assertNotEquals(GameStatus.IN_PROGRESS, g.status());
 
-        assertThrows(IllegalStateException.class, g::hit);
+        assertThrows(InvalidMoveException.class, g::hit);
     }
 }
