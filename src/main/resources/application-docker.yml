@@ -1,0 +1,16 @@
+spring:
+  r2dbc:
+    url: r2dbc:mysql://mysql:3306/blackjack
+    username: blackjack
+    password: blackjack
+
+  flyway:
+    enabled: true
+    url: jdbc:mysql://mysql:3306/blackjack
+    user: blackjack
+    password: blackjack
+    locations: classpath:db/migration
+
+  data:
+    mongodb:
+      uri: mongodb://mongo:27017/blackjack
