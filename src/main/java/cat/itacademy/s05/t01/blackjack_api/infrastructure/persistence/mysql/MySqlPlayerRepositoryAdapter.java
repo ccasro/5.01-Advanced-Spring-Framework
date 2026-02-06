@@ -50,7 +50,7 @@ public class MySqlPlayerRepositoryAdapter implements PlayerRepositoryPort {
 
     @Override
     public Flux<Player> findRanking() {
-        return Flux.error(new UnsupportedOperationException("Not implemented yet"));
+        return repo.findRanking().map(this::toDomain);
     }
 
     private Player toDomain(PlayerRow row) {
