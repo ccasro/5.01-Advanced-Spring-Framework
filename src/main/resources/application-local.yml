@@ -8,6 +8,13 @@ spring:
     username: blackjack
     password: blackjack
 
+  flyway:
+    enabled: true
+    url: jdbc:mysql://localhost:3307/blackjack
+    user: blackjack
+    password: blackjack
+    locations: classpath:db/migration
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

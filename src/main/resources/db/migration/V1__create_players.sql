@@ -3,5 +3,5 @@ CREATE TABLE players (
   external_id VARCHAR(36) NOT NULL UNIQUE,
   name VARCHAR(30) NOT NULL UNIQUE,
   wins INT NOT NULL,
-  losses INT NOT NULL,
+  losses INT NOT NULL
 );
