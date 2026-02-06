@@ -1,0 +1,12 @@
+target
+.idea
+.vscode
+*.iml
+.DS_Store
+
+# Maven wrapper caches if any
+**/.mvn/wrapper/maven-wrapper.jar
+
+# Git
+.git
+.gitignore
