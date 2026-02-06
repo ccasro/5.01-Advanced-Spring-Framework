@@ -1,11 +1,10 @@
 package cat.itacademy.s05.t01.blackjack_api.infrastructure.persistence.mongo;
 
+import cat.itacademy.s05.t01.blackjack_api.domain.exception.GameNotFoundException;
 import cat.itacademy.s05.t01.blackjack_api.domain.model.*;
 import cat.itacademy.s05.t01.blackjack_api.domain.port.GameRepositoryPort;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Component
 public class MongoGameRepositoryAdapter implements GameRepositoryPort {
@@ -30,6 +29,8 @@ public class MongoGameRepositoryAdapter implements GameRepositoryPort {
 
     @Override
     public Mono<Void> deleteById(GameId id) {
-        return Mono.error(new UnsupportedOperationException("Not implemented yet"));
+        return repo.findById(id.value())
+                .switchIfEmpty(Mono.error(new GameNotFoundException(id.value())))
+                .flatMap(doc -> repo.deleteById(id.value()));
     }
 }
