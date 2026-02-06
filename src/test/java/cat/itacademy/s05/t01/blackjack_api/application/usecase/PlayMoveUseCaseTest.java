@@ -9,9 +9,9 @@ import cat.itacademy.s05.t01.blackjack_api.domain.exception.InvalidMoveException
 import cat.itacademy.s05.t01.blackjack_api.domain.model.*;
 import cat.itacademy.s05.t01.blackjack_api.domain.port.GameRepositoryPort;
 import cat.itacademy.s05.t01.blackjack_api.domain.port.PlayerRepositoryPort;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
@@ -30,12 +30,8 @@ public class PlayMoveUseCaseTest {
     @Mock
     GameStateMapper mapper;
 
+    @InjectMocks
     PlayMoveUseCase useCase;
-
-    @BeforeEach
-    void setUp() {
-        useCase = new PlayMoveUseCase(gameRepo, playerRepo, mapper);
-    }
 
     @Test
     void gameExists_hit_returnsMappedResult_andSaves() {
