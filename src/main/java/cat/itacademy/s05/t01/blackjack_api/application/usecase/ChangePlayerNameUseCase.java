@@ -36,6 +36,6 @@ public final class ChangePlayerNameUseCase {
     }
 
     private PlayerResult toResult(Player p) {
-        return new PlayerResult(p.id().value(), p.name().value(), p.wins(), p.losses(), p.score());
+        return new PlayerResult(p.id().value(), p.name().value(), p.wins(), p.losses());
     }
 }
