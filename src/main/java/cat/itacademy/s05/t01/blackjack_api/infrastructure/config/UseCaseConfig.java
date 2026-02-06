@@ -39,4 +39,9 @@ public class UseCaseConfig {
     ChangePlayerNameUseCase changePlayerNameUseCase(PlayerRepositoryPort playerRepo){
         return new ChangePlayerNameUseCase(playerRepo);
     }
+
+    @Bean
+    ViewRankingUseCase viewRankingUseCase(PlayerRepositoryPort playerRepo){
+        return new ViewRankingUseCase(playerRepo);
+    }
 }
