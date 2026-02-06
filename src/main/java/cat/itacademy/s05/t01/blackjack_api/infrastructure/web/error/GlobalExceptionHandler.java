@@ -4,6 +4,7 @@ package cat.itacademy.s05.t01.blackjack_api.infrastructure.web.error;
 import cat.itacademy.s05.t01.blackjack_api.domain.exception.GameNotFoundException;
 import cat.itacademy.s05.t01.blackjack_api.domain.exception.InvalidMoveException;
 import cat.itacademy.s05.t01.blackjack_api.domain.exception.InvalidPlayerNameException;
+import cat.itacademy.s05.t01.blackjack_api.domain.exception.PlayerNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,18 @@ public class GlobalExceptionHandler {
         return Mono.just(ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ErrorResponse.of(404, "GAME_NOT_FOUND", ex.getMessage(), request.getPath().value())));
+    }
+
+    @ExceptionHandler(PlayerNotFoundException.class)
+    public Mono<ResponseEntity<ErrorResponse>> handlePlayerNotFound(
+            PlayerNotFoundException ex,
+            ServerHttpRequest request
+    ) {
+        return Mono.just(ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.of(
+                        404, "PLAYER_NOT_FOUND", ex.getMessage(), request.getPath().value()
+                )));
     }
 
     @ExceptionHandler(InvalidPlayerNameException.class)

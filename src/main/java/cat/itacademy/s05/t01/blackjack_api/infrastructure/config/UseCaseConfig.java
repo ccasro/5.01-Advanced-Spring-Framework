@@ -1,10 +1,7 @@
 package cat.itacademy.s05.t01.blackjack_api.infrastructure.config;
 
 import cat.itacademy.s05.t01.blackjack_api.application.mapper.GameStateMapper;
-import cat.itacademy.s05.t01.blackjack_api.application.usecase.CreateNewGameUseCase;
-import cat.itacademy.s05.t01.blackjack_api.application.usecase.DeleteGameUseCase;
-import cat.itacademy.s05.t01.blackjack_api.application.usecase.GetGameStateUseCase;
-import cat.itacademy.s05.t01.blackjack_api.application.usecase.PlayMoveUseCase;
+import cat.itacademy.s05.t01.blackjack_api.application.usecase.*;
 import cat.itacademy.s05.t01.blackjack_api.domain.port.GameRepositoryPort;
 import cat.itacademy.s05.t01.blackjack_api.domain.port.PlayerRepositoryPort;
 import org.springframework.context.annotation.Bean;
@@ -36,5 +33,10 @@ public class UseCaseConfig {
     @Bean
     DeleteGameUseCase deleteGameUseCase(GameRepositoryPort gameRepo){
         return new DeleteGameUseCase(gameRepo);
+    }
+
+    @Bean
+    ChangePlayerNameUseCase changePlayerNameUseCase(PlayerRepositoryPort playerRepo){
+        return new ChangePlayerNameUseCase(playerRepo);
     }
 }
