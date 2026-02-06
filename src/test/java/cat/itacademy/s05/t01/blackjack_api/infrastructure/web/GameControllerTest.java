@@ -2,6 +2,7 @@ package cat.itacademy.s05.t01.blackjack_api.infrastructure.web;
 
 import cat.itacademy.s05.t01.blackjack_api.application.dto.*;
 import cat.itacademy.s05.t01.blackjack_api.application.usecase.CreateNewGameUseCase;
+import cat.itacademy.s05.t01.blackjack_api.application.usecase.DeleteGameUseCase;
 import cat.itacademy.s05.t01.blackjack_api.application.usecase.GetGameStateUseCase;
 import cat.itacademy.s05.t01.blackjack_api.application.usecase.PlayMoveUseCase;
 import cat.itacademy.s05.t01.blackjack_api.domain.exception.GameNotFoundException;
@@ -12,9 +13,11 @@ import cat.itacademy.s05.t01.blackjack_api.domain.model.Suit;
 import cat.itacademy.s05.t01.blackjack_api.infrastructure.web.controller.GameController;
 import cat.itacademy.s05.t01.blackjack_api.infrastructure.web.dto.CreateGameRequest;
 import cat.itacademy.s05.t01.blackjack_api.infrastructure.web.dto.PlayMoveRequest;
+import cat.itacademy.s05.t01.blackjack_api.infrastructure.web.error.GlobalExceptionHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -26,6 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebFluxTest(controllers = GameController.class)
+@Import(GlobalExceptionHandler.class)
 public class GameControllerTest {
 
     @Autowired
@@ -39,6 +43,9 @@ public class GameControllerTest {
 
     @MockitoBean
     PlayMoveUseCase playMoveUseCase;
+
+    @MockitoBean
+    DeleteGameUseCase deleteGameUseCase;
 
     @Test
     void should_create_game_and_return_201() {
@@ -220,6 +227,32 @@ public class GameControllerTest {
                 .jsonPath("$.dealerScore").isEqualTo(20)
                 .jsonPath("$.dealerCards[0].hidden").isEqualTo(false)
                 .jsonPath("$.dealerCards[1].hidden").isEqualTo(false);
+    }
+
+    @Test
+    void should_return_204_when_deleted() {
+        when(deleteGameUseCase.execute("g1")).thenReturn(Mono.empty());
+
+        webTestClient.delete()
+                .uri("/game/g1/delete")
+                .exchange()
+                .expectStatus().isNoContent()
+                .expectBody().isEmpty();
+    }
+
+    @Test
+    void should_return_404_when_game_not_found_when_delete_game() {
+        when(deleteGameUseCase.execute("missing"))
+                .thenReturn(Mono.error(new GameNotFoundException("missing")));
+
+        webTestClient.delete()
+                .uri("/game/missing/delete")
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody()
+                .jsonPath("$.status").isEqualTo(404)
+                .jsonPath("$.code").isEqualTo("GAME_NOT_FOUND")
+                .jsonPath("$.path").isEqualTo("/game/missing/delete");
     }
 }
 
