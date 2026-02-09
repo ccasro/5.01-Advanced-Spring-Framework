@@ -257,13 +257,13 @@ Flyway manages database schema migrations automatically.
 The application is containerized and deployable to cloud platforms such as Render.
 
 ```arduino
-https://blackjack-api-1-0-1.onrender.com
+https://blackjack-api-latest-vz8x.onrender.com
 ```
 
 Swagger: 
 
 ```arduino
-https://blackjack-api-1-0-1.onrender.com/swagger-ui.html
+https://blackjack-api-latest-vz8x.onrender.com/swagger-ui.html
 ```
 
 
