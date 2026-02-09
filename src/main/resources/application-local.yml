@@ -14,11 +14,3 @@ spring:
     user: blackjack
     password: blackjack
     locations: classpath:db/migration
-
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    operationsSorter: alpha
-    tagsSorter: alpha
-  api-docs:
-    path: /v3/api-docs
